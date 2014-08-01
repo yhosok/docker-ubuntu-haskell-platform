@@ -1,17 +1,25 @@
-from ubuntu:latest
+FROM ubuntu:latest
 
-run useradd -m -s /bin/bash haskell
-run sed -i 's/main$/main universe/' /etc/apt/sources.list && apt-get update && apt-get -y install build-essential haskell-platform curl sudo emacs24-nox emacs24-el vim
-run echo "haskell ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/haskell && chmod 0440 /etc/sudoers.d/haskell
+RUN useradd -m -s /bin/bash haskell
+RUN sed -i 's/main$/main universe/' /etc/apt/sources.list
 
-run locale-gen en_US.UTF-8  
+RUN apt-get update
 
-user haskell
-workdir /home/haskell
+#install
+RUN apt-get -y install build-essential curl sudo git fonts-inconsolata fonts-ipafont fonts-ipaexfont
+RUN apt-get -y install sqlite3 libsqlite3-0 libsqlite3-dev
+RUN apt-get -y install emacs24-nox emacs24-el vim
+RUN aptget -y haskell-platform
 
-run sudo -H cabal update && sudo -H cabal install --global cabal-install
+RUN echo "haskell ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/haskell && chmod 0440 /etc/sudoers.d/haskell
 
-env HOME /home/haskell
-env LANG en_US.UTF-8  
-env LANGUAGE en_US:en  
-env LC_ALL en_US.UTF-8  
+RUN locale-gen en_US en_US.UTF-8 && dpkg-reconfigure locales
+RUN locale-gen ja_JP ja_JP.UTF-8 && dpkg-reconfigure locales
+
+USER haskell
+WORKDIR /home/haskell
+
+RUN sudo -H cabal update && sudo -H cabal install --global cabal-install
+
+ENV HOME /home/haskell
+
