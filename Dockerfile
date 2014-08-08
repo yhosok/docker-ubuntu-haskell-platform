@@ -9,7 +9,7 @@ RUN apt-get update
 RUN apt-get -y install build-essential curl sudo git fonts-inconsolata fonts-ipafont fonts-ipaexfont
 RUN apt-get -y install sqlite3 libsqlite3-0 libsqlite3-dev
 RUN apt-get -y install emacs24-nox emacs24-el vim
-RUN apt-get -y haskell-platform
+RUN apt-get -y install haskell-platform
 
 RUN echo "haskell ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/haskell && chmod 0440 /etc/sudoers.d/haskell
 
